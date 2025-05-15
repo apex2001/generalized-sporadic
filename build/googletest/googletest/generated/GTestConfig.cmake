@@ -3,7 +3,7 @@
 ####### Any changes to this file will be overwritten by the next CMake run ####
 ####### The input file was Config.cmake.in                            ########
 
-get_filename_component(PACKAGE_${CMAKE_FIND_PACKAGE_NAME}_COUNTER_1 "${CMAKE_CURRENT_LIST_DIR}/../../../" ABSOLUTE)
+get_filename_component(PACKAGE_PREFIX_DIR "${CMAKE_CURRENT_LIST_DIR}/../../../" ABSOLUTE)
 
 macro(set_and_check _var _file)
   set(${_var} "${_file}")
@@ -27,6 +27,10 @@ include(CMakeFindDependencyMacro)
 if ()
   set(THREADS_PREFER_PTHREAD_FLAG )
   find_dependency(Threads)
+endif()
+if (OFF)
+  find_dependency(absl)
+  find_dependency(re2)
 endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/GTestTargets.cmake")

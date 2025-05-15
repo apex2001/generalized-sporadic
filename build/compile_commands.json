@@ -1,0 +1,32 @@
+[
+{
+  "directory": "C:/Users/nguye/Documents/GitHub/generalized-sporadic/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe   -g -o CMakeFiles\\CMakeHigh.dir\\main.cpp.obj -c C:\\Users\\nguye\\Documents\\GitHub\\generalized-sporadic\\main.cpp",
+  "file": "C:/Users/nguye/Documents/GitHub/generalized-sporadic/main.cpp"
+},
+{
+  "directory": "C:/Users/nguye/Documents/GitHub/generalized-sporadic/build/googletest/googlemock",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/gmock.dir/includes_CXX.rsp -g -Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=0 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles\\gmock.dir\\src\\gmock-all.cc.obj -c C:\\Users\\nguye\\Documents\\GitHub\\generalized-sporadic\\googletest\\googlemock\\src\\gmock-all.cc",
+  "file": "C:/Users/nguye/Documents/GitHub/generalized-sporadic/googletest/googlemock/src/gmock-all.cc"
+},
+{
+  "directory": "C:/Users/nguye/Documents/GitHub/generalized-sporadic/build/googletest/googlemock",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/gmock_main.dir/includes_CXX.rsp -g -Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=0 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles\\gmock_main.dir\\src\\gmock_main.cc.obj -c C:\\Users\\nguye\\Documents\\GitHub\\generalized-sporadic\\googletest\\googlemock\\src\\gmock_main.cc",
+  "file": "C:/Users/nguye/Documents/GitHub/generalized-sporadic/googletest/googlemock/src/gmock_main.cc"
+},
+{
+  "directory": "C:/Users/nguye/Documents/GitHub/generalized-sporadic/build/googletest/googletest",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/gtest.dir/includes_CXX.rsp -g -Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=0 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles\\gtest.dir\\src\\gtest-all.cc.obj -c C:\\Users\\nguye\\Documents\\GitHub\\generalized-sporadic\\googletest\\googletest\\src\\gtest-all.cc",
+  "file": "C:/Users/nguye/Documents/GitHub/generalized-sporadic/googletest/googletest/src/gtest-all.cc"
+},
+{
+  "directory": "C:/Users/nguye/Documents/GitHub/generalized-sporadic/build/googletest/googletest",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/gtest_main.dir/includes_CXX.rsp -g -Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=0 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles\\gtest_main.dir\\src\\gtest_main.cc.obj -c C:\\Users\\nguye\\Documents\\GitHub\\generalized-sporadic\\googletest\\googletest\\src\\gtest_main.cc",
+  "file": "C:/Users/nguye/Documents/GitHub/generalized-sporadic/googletest/googletest/src/gtest_main.cc"
+},
+{
+  "directory": "C:/Users/nguye/Documents/GitHub/generalized-sporadic/build/test",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/CMakeTest.dir/includes_CXX.rsp -g -o CMakeFiles\\CMakeTest.dir\\main_test.cpp.obj -c C:\\Users\\nguye\\Documents\\GitHub\\generalized-sporadic\\test\\main_test.cpp",
+  "file": "C:/Users/nguye/Documents/GitHub/generalized-sporadic/test/main_test.cpp"
+}
+]

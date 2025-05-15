@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="(empty)"
+	BuildStamp="20250514-1952-Experimental"
+	Name="(empty)"
+	Generator="ctest-3.22.22040401-MSVC_2"
+	CompilerName=""
+	CompilerVersion=""
+	OSName="Windows"
+	Hostname="LAPTOP-GR57R1MC"
+	OSRelease=" Personal"
+	OSVersion=" (Build 19045)"
+	OSPlatform="AMD64"
+	Is64Bits="1"
+	VendorString="AuthenticAMD"
+	VendorID="Advanced Micro Devices"
+	FamilyID="15"
+	ModelID="0"
+	ProcessorCacheSize="64"
+	NumberOfLogicalCPU="16"
+	NumberOfPhysicalCPU="8"
+	TotalVirtualMemory="74670"
+	TotalPhysicalMemory="64942"
+	LogicalProcessorsPerPhysical="2"
+	ProcessorClockFrequency="3293"
+	>
+	<Testing>
+		<StartDateTime>May 14 17:09 Central Daylight Time</StartDateTime>
+		<StartTestTime>1747260592</StartTestTime>
+		<TestList>
+			<Test>./test/CMakeTest</Test>
+		</TestList>
+		<Test Status="failed">
+			<Name>CMakeTest</Name>
+			<Path>./test</Path>
+			<FullName>./test/CMakeTest</FullName>
+			<FullCommandLine>C:\Users\nguye\Documents\GitHub\generalized-sporadic\build\test\CMakeTest.exe</FullCommandLine>
+			<Results>
+				<NamedMeasurement type="text/string" name="Exit Code">
+					<Value>Failed</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Exit Value">
+					<Value>1</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="numeric/double" name="Execution Time">
+					<Value>0.760251</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="numeric/double" name="Processors">
+					<Value>1</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Completion Status">
+					<Value>Completed</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Command Line">
+					<Value>C:\Users\nguye\Documents\GitHub\generalized-sporadic\build\test\CMakeTest.exe</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Environment">
+					<Value>#CTEST_RESOURCE_GROUP_COUNT=</Value>
+				</NamedMeasurement>
+				<Measurement>
+					<Value encoding="base64" compression="gzip">eJzFVNtqAjEQfc9XzKOCLl6wLQt9EG8ttbW4Sh9ckbg7q6Exsbl46dd3L0W0aCtIcR4COTMnOWdgZnS/izH0rRBMzKAKBrXRECm5gHJ6AW2ZQYeMirsYQ4fLKeVZHsWKKSkWKOJaNEW7/FF88Gir0WyTEfSHL5DGOEWc514zRrPoPe2hkCvBQuePUMJp1GVHSCl+mvaq5FJqZpgUZWImC7pxoURYchzeGq4/1Ki0L2Z2i35TBjbxqP0OMw926s9QoKKcfWJY1EupaMgCP3GaHhMMwsiZu9WaC23KuFVIWpslBgZDwA8bE80WZARmjhphRblF7RKAfX25WgEM1e8emjxJPLzNWTAHpl0wymIMRZRrJP+j/OYS5eWrSr+9RHqldE3pdxdJP7fr8di064/dVvPoXOym59cxzqrASEN5npy3IAxSVQzlWpDR/v45uXdAUeEcfhRLf617Xia9khGdQ0PZCwXgTCftmyKXa/cPz4TEtO/8oOUNyBcfjqE5====</Value>
+				</Measurement>
+			</Results>
+		</Test>
+		<EndDateTime>May 14 17:09 Central Daylight Time</EndDateTime>
+		<EndTestTime>1747260593</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>

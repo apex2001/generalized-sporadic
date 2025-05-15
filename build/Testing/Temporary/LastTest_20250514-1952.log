@@ -1,0 +1,70 @@
+Start testing: May 14 17:09 Central Daylight Time
+----------------------------------------------------------
+1/1 Testing: CMakeTest
+1/1 Test: CMakeTest
+Command: "C:/Users/nguye/Documents/GitHub/generalized-sporadic/build/test/CMakeTest.exe"
+Directory: C:/Users/nguye/Documents/GitHub/generalized-sporadic/build/test
+"CMakeTest" start time: May 14 17:09 Central Daylight Time
+Output:
+----------------------------------------------------------
+[==========] Running 3 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 3 tests from ECDF
+[ RUN      ] ECDF.MOD
+[       OK ] ECDF.MOD (0 ms)
+[ RUN      ] ECDF.dbfLi
+[       OK ] ECDF.dbfLi (0 ms)
+[ RUN      ] ECDF.Proposition1
+t_max: 0
+i: 0
+t_max: 0
+i: 0
+C:\Users\nguye\Documents\GitHub\generalized-sporadic\test\test_ecdf.h:35: Failure
+Expected equality of these values:
+  Proposition1(5, taskSet)
+    Which is: true
+  false
+
+t_max: 0
+i: 0
+C:\Users\nguye\Documents\GitHub\generalized-sporadic\test\test_ecdf.h:36: Failure
+Expected equality of these values:
+  Proposition1(15, taskSet)
+    Which is: true
+  false
+
+t_max: 0
+i: 0
+C:\Users\nguye\Documents\GitHub\generalized-sporadic\test\test_ecdf.h:37: Failure
+Expected equality of these values:
+  Proposition1(20, taskSet)
+    Which is: true
+  false
+
+t_max: 0
+i: 0
+C:\Users\nguye\Documents\GitHub\generalized-sporadic\test\test_ecdf.h:38: Failure
+Expected equality of these values:
+  Proposition1(25, taskSet)
+    Which is: true
+  false
+
+[  FAILED  ] ECDF.Proposition1 (0 ms)
+[----------] 3 tests from ECDF (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 3 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 2 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] ECDF.Proposition1
+
+ 1 FAILED TEST
+<end of output>
+Test time =   0.76 sec
+----------------------------------------------------------
+Test Failed.
+"CMakeTest" end time: May 14 17:09 Central Daylight Time
+"CMakeTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: May 14 17:09 Central Daylight Time

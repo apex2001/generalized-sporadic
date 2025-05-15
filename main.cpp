@@ -5,6 +5,7 @@
 
 #include "./src/search_algorithm.h"
 #include "./src/amc.h"
+#include "./src/ecdf.h"
 
 void create_csv_file(string filename) {
   ifstream file_check(filename);
@@ -47,10 +48,10 @@ int main(int argc, char* argv[]) {
   int count = stoi(argv[1]);
   double utilization = stod(argv[2]) / 1000;
   cout << to_string(count) << " " << to_string(utilization) << endl;
-  int before_success = 0, after_eds_success = 0, after_edf_vd_success = 0, after_amc_success = 0;
+  int before_success = 0, after_eds_success = 0, after_edf_vd_success = 0, after_amc_success = 0, after_ecdf_success = 0;
   vector<int> result;
   int cum_duration = 0, cum_duration2 = 0; 
-  unsigned long long cum_eds_duration = 0, cum_edf_vd_duration = 0, cum_amc_duration = 0;
+  unsigned long long cum_eds_duration = 0, cum_edf_vd_duration = 0, cum_amc_duration = 0, cum_ecdf_duration = 0;
 
   for (int i = 0; i < count; ++i) {
     TaskSet task_set_eds = TaskSet(utilization);
@@ -60,9 +61,17 @@ int main(int argc, char* argv[]) {
 
     TaskSet task_set_edf_vd = task_set_eds;
     TaskSet task_set_amc = task_set_eds;
+
+    //ECDF
+    TaskSet task_set_ecdf = task_set_eds;
+
     assert(&task_set_eds != &task_set_amc);
     assert(&task_set_eds != &task_set_edf_vd);
     assert(&task_set_edf_vd != &task_set_amc);
+
+    assert(&task_set_ecdf != &task_set_eds);
+    assert(&task_set_ecdf != &task_set_edf_vd);
+    assert(&task_set_ecdf != &task_set_amc);
 
     if (task_set_eds.get_thm1() && task_set_eds.get_thm2() && task_set_eds.get_thm3()) {
       before_success++;
@@ -103,6 +112,16 @@ int main(int argc, char* argv[]) {
     duration = chrono::duration_cast<chrono::milliseconds>(end_time - start_time);
     assert(end_time >= start_time);
     cum_amc_duration += static_cast<unsigned long long>(duration.count());
+
+    // ECDF
+    start_time = chrono::high_resolution_clock::now();
+    if (ECDF(task_set_ecdf) == "Success") {
+      after_ecdf_success++;
+    }
+    end_time = chrono::high_resolution_clock::now();
+    duration = chrono::duration_cast<chrono::milliseconds>(end_time - start_time);
+    assert(end_time >= start_time);
+    cum_ecdf_duration += static_cast<unsigned long long>(duration.count());
   }
 
   result.push_back(static_cast<int>(utilization * 1000));
@@ -114,6 +133,8 @@ int main(int argc, char* argv[]) {
   result.push_back(cum_edf_vd_duration);
   result.push_back(after_amc_success);
   result.push_back(cum_amc_duration);
+  result.push_back(after_ecdf_success);
+  result.push_back(cum_ecdf_duration);
 
   string filename = "experiment.csv";
 

@@ -212,7 +212,7 @@ private:
     }
 
     return static_cast<double>(l + maxD);
-  }
+  } 
 
   double U_maxTD() {
     double maxTD = 0;
