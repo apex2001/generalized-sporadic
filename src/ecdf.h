@@ -3,18 +3,10 @@
 
 #include <algorithm>
 #include <vector>
+#include <cmath>
+#include <limits.h>
 
 #include "generate_task_set.h"
-
-// will be removed
-// struct Task {
-//     int minSeparation_Ti;
-//     string criticalityLevel_Li;
-//     double wcetVals_Ci[2] = {0, 0}; //[0] = CiL, [1] = CiH
-//     double deadline_Di;
-//     double deadlineLC_DiL; //DiL = Di for LC tasks and DiL <= Di for HC tasks
-// };
-
 
 //------------ MOD FUNCTION ------------------
 
@@ -35,38 +27,34 @@ double dbfLi(int time, int Ti, double DiL, double CiL) { //Equation (1)
     return res;
 }
 
-// bool Proposition1(int time, vector<Task> taskSet) {
-//     double sum = 0;
-//     //int* Ti, int* DiL, int* CiL
+bool Proposition1(int t, TaskSet& taskSet) {
+    // int t_max = taskSet.get_t_max();
+    // if (t_max == 0) return false;
 
-//     for (int i = 0; i < taskSet.size(); i++) {
-//         sum += dbfLi(time, taskSet[i].minSeparation_Ti, taskSet[i].deadlineLC_DiL, taskSet[i].wcetVals_Ci[0]);
-//     }
+    // for (int t = 0; t <= t_max; t++) {
+    //     // cout << "i: " << t << endl;
+    //     double sum = 0;
+    //     for (const auto& pair : taskSet.get_task_set()) {
+    //         const Task& task = pair.second;
+    //         sum += dbfLi(t, task.T, task.tight_D, task.C_LO);
+    //     }
 
-//     // cout << "Prop1 time: " << time << endl;
-//     // cout << "Prop1 sum: " << sum << endl;
-//     // cout << endl;
+    //     if (sum > t) {
+    //         return false;
+    //     }
+    // }
+
     
-
-//     return sum <= time;
-// }
-
-bool Proposition1(TaskSet& taskSet) {
-    int t_max = taskSet.get_t_max();
-    if (t_max == 0) return false;
-
-    for (int t = 0; t <= t_max; t++) {
-        // cout << "i: " << t << endl;
-        double sum = 0;
-        for (const auto& pair : taskSet.get_task_set()) {
-            const Task& task = pair.second;
-            sum += dbfLi(t, task.T, task.tight_D, task.C_LO);
-        }
-
-        if (sum > t) {
-            return false;
-        }
+    double sum = 0;
+    for (const auto& pair : taskSet.get_task_set()) {
+        const Task& task = pair.second;
+        sum += dbfLi(t, task.T, task.tight_D, task.C_LO);
     }
+
+    if (sum > t) {
+        return false;
+    }
+    
     
     return true;
 }
@@ -203,15 +191,31 @@ double Theorem2_LHS(int t1, int t2, TaskSet& taskSet) {
         // cout << "task C_LO: " << task.C_LO << endl;
         // cout << task.L << endl;
         if (task.L == Level::HI) {
-            if ((t2 - t1) > (task.D - task.tight_D)) { // case 2 only
-                double CO_Cal = CO_prop2(t2 - t1, task.C_LO, task.D, task.tight_D, task.T)\
-                            + task.C_HI - task.C_LO; //should check if task is HC and case 2
-                CO_Res += CO_Cal;
+            if ((t2 - t1) > (task.D - task.tight_D)) {
+                if  ((task.D - task.tight_D) < MOD(t2 - t1, task.T) && // case 2 lemma 4
+                    (MOD(t2 - t1, task.T) < task.D) &&      
+                    ((floor((t2 - t1) / task.T) * task.T + task.D) <= t2)) { // case 2 only
+
+                    double CO_Cal = CO_prop2(t2 - t1, task.C_LO, task.D, task.tight_D, task.T)\
+                                + (task.C_HI - task.C_LO); //should check if task is HC and case 2
+                    CO_Res += CO_Cal;
+                }
+
+                else if (!((task.D - task.tight_D) < MOD(t2 - t1, task.T) && // case 2 lemma 4
+                        (MOD(t2 - t1, task.T) < task.D) &&      
+                        ((floor((t2 - t1) / task.T) * task.T + task.D) <= t2))  ||
+                    
+                        !((task.tight_D > MOD(t1, task.T)) && 
+                        ((floor(t1 / task.T) / task.T + task.tight_D) <= t2))) { // case 3 lemma 5
+                            dbfHi_Res += dbfHi_l4(t1, t2, task.C_HI, task.D, task.T);
+                }
             }
 
-            if ((t2 - t1) > (task.D - task.tight_D)) { // case 2 or 3, confer with prof
-                dbfHi_Res += dbfHi_l4(t1, t2, task.C_HI, task.D, task.T);
-            }
+            
+
+            // if ((t2 - t1) > (task.D - task.tight_D)) { // case 2 or 3, confer with prof
+                
+            // }
         }
     }
 
@@ -228,17 +232,108 @@ bool Theorem2(int t1, int t2, TaskSet& taskSet) {
     return res <= t2;
 } 
 
-int findCandiate(int t1, int t2, TaskSet& taskSet) {
+int findCandiate(vector<Task> candidates, int t1, int t2, TaskSet& taskSet) {
     double Theorem2_LHS_Res = Theorem2_LHS(t1, t2, taskSet);
     double DEM = Theorem2_LHS_Res - t2;
     int res = -1;
     double DIFF = 0, DEC = INFINITY;
 
-    
+    for (int i = 0; i < candidates.size(); i++) {
+        if (((t2 - t1) > (candidates[i].D - candidates[i].tight_D)) &&   //1st claude of case 2
+
+            ((candidates[i].D - candidates[i].tight_D) < MOD(t2 - t1, candidates[i].T)) && //2nd clause of case 2 lemma 4
+            (MOD(t2 - t1, candidates[i].T) < candidates[i].D) &&      
+
+
+            ((floor((t2 - t1) / candidates[i].T) * candidates[i].T + candidates[i].D) <= t2) &&//2nd clause of case 2 lemma 4
+
+            ((candidates[i].C_HI - candidates[i].C_LO) >= DEM)) {  
+        
+            if ((MOD(t2 - t1, candidates[i].T) - (candidates[i].D - candidates[i].tight_D)) < DEC) {
+                DEC = MOD(t2 - t1, candidates[i].T) - (candidates[i].D - candidates[i].tight_D);
+                res = i;
+                DIFF = candidates[i].C_HI - candidates[i].C_LO;
+            }
+            else if ((MOD(t2 - t1, candidates[i].T) - (candidates[i].D - candidates[i].tight_D)) == DEC) {
+                if (candidates[i].C_HI - candidates[i].C_LO > DIFF) {
+                    res = i;
+                    DIFF = candidates[i].C_HI - candidates[i].C_LO;
+                }
+            }
+        }    
+    }
+
+    return res;
 }
 
 string ECDF(TaskSet& taskSet) {
-    return "Success";
+    int i = -1, tMax = taskSet.get_t_max(), min_diff = INT_MAX;
+    vector<Task> candidates;
+
+    map<int, Task> taskSetMap = taskSet.get_task_set();
+    
+    for (const auto& pair : taskSetMap) {
+        const Task& task = pair.second;
+        
+        if (task.L == Level::HI) {
+            candidates.push_back(task);
+            min_diff = min(min_diff, (task.D - task.tight_D));
+        }
+    }
+    
+    while (true) {
+        bool feasible = true;
+
+        for (int t = 0; t <= tMax; t++) {
+            if (!Proposition1(t, taskSet)) {
+                if (i == -1) {
+                    return "Failure";
+                }
+                
+                for (auto& candidate : candidates) {
+                    if (candidate.ID == i) {
+                        candidate.C_LO += 1;
+                        candidates.erase(candidates.begin() + i);
+                        break;
+                    }
+                }
+                
+                i = -1;
+                break;
+            }
+        }
+
+        for (int t2 = 0; t2 <= tMax; t2++) {
+            for (int t1 = 0; t1 < t2 - min_diff; t1++) {
+                if (!Theorem2(t1, t2, taskSet)) {
+                    if (t1 == 0 && candidates.empty()) {
+                        return "Failure";
+                    }
+
+                    i = findCandiate(candidates, t1, t2, taskSet);
+
+                    for (auto& candidate : candidates) {
+                        if (candidate.ID == i) {
+                            candidate.tight_D -= 1;
+                            
+                            if (candidate.tight_D - 1 < candidate.C_LO) {
+                                candidates.erase(candidates.begin() + i);
+                            }
+                            break;
+                        }
+                    }
+
+                    feasible = false;
+                    break;
+                }
+            }
+        }
+        if (feasible) {
+            return "Success";
+        }
+    }
+
+    return "Unknown"; // This line should never be reached
 }
 
 

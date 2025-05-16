@@ -27,7 +27,7 @@ TEST(ECDF, dbfLi) {
 TEST(ECDF, Proposition1) {
     TaskSet taskSet = TaskSet(0.5);
 
-    EXPECT_EQ(Proposition1(taskSet), true);
+    EXPECT_EQ(Proposition1(14, taskSet), true);
 }
 
 TEST(ECDF, Proposition1_Fail_ManyTasks_HighCombinedUtilization) {
@@ -52,7 +52,7 @@ TEST(ECDF, Proposition1_Fail_ManyTasks_HighCombinedUtilization) {
     cout << "utilization: " << testSet.utilization << endl
             << "t_max: " << testSet.t_max << endl;
 
-    EXPECT_FALSE(Proposition1(testSet));
+    EXPECT_FALSE(Proposition1(15, testSet));
 }
 
 TEST(ECDF, dbfHi_l4) {

@@ -1,10 +1,10 @@
-Start testing: May 15 10:52 Central Daylight Time
+Start testing: May 15 17:23 Central Daylight Time
 ----------------------------------------------------------
 1/1 Testing: CMakeTest
 1/1 Test: CMakeTest
 Command: "C:/Users/nguye/Documents/GitHub/generalized-sporadic/build/test/CMakeTest.exe"
 Directory: C:/Users/nguye/Documents/GitHub/generalized-sporadic/build/test
-"CMakeTest" start time: May 15 10:52 Central Daylight Time
+"CMakeTest" start time: May 15 17:23 Central Daylight Time
 Output:
 ----------------------------------------------------------
 [==========] Running 8 tests from 3 test suites.
@@ -15,7 +15,7 @@ Output:
 [ RUN      ] ECDF.dbfLi
 [       OK ] ECDF.dbfLi (0 ms)
 [ RUN      ] ECDF.Proposition1
-[       OK ] ECDF.Proposition1 (1 ms)
+[       OK ] ECDF.Proposition1 (0 ms)
 [ RUN      ] ECDF.Proposition1_Fail_ManyTasks_HighCombinedUtilization
 num_tasks: 4
 utilization: 0.842857
@@ -25,7 +25,7 @@ t_max: 0
 [       OK ] ECDF.dbfHi_l4 (0 ms)
 [ RUN      ] ECDF.dbfUNi_l2
 [       OK ] ECDF.dbfUNi_l2 (0 ms)
-[----------] 6 tests from ECDF (1 ms total)
+[----------] 6 tests from ECDF (0 ms total)
 
 [----------] 1 test from dbfUN_l6Test
 [ RUN      ] dbfUN_l6Test.MixedTasks_ConditionFalseForHI
@@ -41,14 +41,14 @@ task4: 0
 [----------] 1 test from dbfL1_l7Test (0 ms total)
 
 [----------] Global test environment tear-down
-[==========] 8 tests from 3 test suites ran. (1 ms total)
+[==========] 8 tests from 3 test suites ran. (0 ms total)
 [  PASSED  ] 8 tests.
 <end of output>
-Test time =   0.84 sec
+Test time =   0.88 sec
 ----------------------------------------------------------
 Test Passed.
-"CMakeTest" end time: May 15 10:52 Central Daylight Time
+"CMakeTest" end time: May 15 17:23 Central Daylight Time
 "CMakeTest" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: May 15 10:52 Central Daylight Time
+End testing: May 15 17:23 Central Daylight Time

@@ -24,8 +24,8 @@
 	ProcessorClockFrequency="3293"
 	>
 	<Testing>
-		<StartDateTime>May 15 10:52 Central Daylight Time</StartDateTime>
-		<StartTestTime>1747324373</StartTestTime>
+		<StartDateTime>May 15 17:23 Central Daylight Time</StartDateTime>
+		<StartTestTime>1747347798</StartTestTime>
 		<TestList>
 			<Test>./test/CMakeTest</Test>
 		</TestList>
@@ -36,7 +36,7 @@
 			<FullCommandLine>C:\Users\nguye\Documents\GitHub\generalized-sporadic\build\test\CMakeTest.exe</FullCommandLine>
 			<Results>
 				<NamedMeasurement type="numeric/double" name="Execution Time">
-					<Value>0.839634</Value>
+					<Value>0.875201</Value>
 				</NamedMeasurement>
 				<NamedMeasurement type="numeric/double" name="Processors">
 					<Value>1</Value>
@@ -51,12 +51,12 @@
 					<Value>#CTEST_RESOURCE_GROUP_COUNT=</Value>
 				</NamedMeasurement>
 				<Measurement>
-					<Value encoding="base64" compression="gzip">eJyVVE1vgkAQvfMr5qgHiSBVY9KTltrUj6bVkzFkkVU2XXYNu1jtr+9+JBRbtHYu7M57b3gzGVjdl7GG14IxwnbQB4mFFLDNeQYdcwFREPV0nVWrjDU8Uh4jagmYHUjOWYaZImPZKvY/yN1q1YfhKHRW8LqcgYm1ybjT+UhlbcyfK1lotCETzRpJEm8npEZk8pdlLznfc0Ek4cyrUVdhaHg3FIlCRGg0Rey0QOJdRGOyS4c8iwnDyVISSj6R5jmsyCKpGQMInOIbGEDb7Qd+/67nyChDR3X/w9eNb7w6ujGJaFA/PQNdFS9niuLXqy1Wyq8ugh0wSC4RbTrnZM9ul+GashHtLlTm3FEVcafkiBM7kiFniRlWiKjAIc/HT+d2/yGs7eWSPUu+qaWJF9FebUsl4r6pz5LiyVybc/T2+Ho99KEzAM8cgl8Lc7FCpRPXdZ1FiiHXjvgWpDobd7yQ+0LCBxIKy/gBJyAI22Ag6lM/bjBOhCWnSppymmi11/YDiE/mR/EF+SFIng==</Value>
+					<Value encoding="base64" compression="gzip">eJyVVMtuwjAQvPsr9lgOWCSkgJB6gqZU5VFROCEUOcQQq46NYodCv76OI6WhDbTsJfbOzGZ2tcnqoYw1zDMhmNhBDzRVWsE2lQm07QVUxswTo1WzjDU8cRkSXhCoOLBUioQKQ6a6me1/kDvVqo+DoY9WMF9OwcbaZvBkNjTZImYvlSzctSBRjRpJFG7HrEZk85dlr6ncS8U0k8KpUVfh/xUJfMJ4MCHitCDqXQUjtosHMgmZoNFSM84+Sc5DIksCnTP64KHsG+hDC/c8t3ffRTpIyNHc//D1zzdeHd2IBdyrn56FroqXU0Nx69UFVsqvLkLBAi014Q10TnaK7bJcWzbgnYXJnDuqInjCjjQqRjKQIrLD8glX1Jfp6Pnc7g3C2l4u2buhpbET8G5tSyWC38xnyel4lptD+fa4+Xrkh3YfHHvwfi3MxQqVTjDGaBFTSHNHcgvanK07mel9puGDKIMl8kAjUExsKDDzqR83lEaqIMdGGkse5Wqn5XoQnuyP4gv0Gkic====</Value>
 				</Measurement>
 			</Results>
 		</Test>
-		<EndDateTime>May 15 10:52 Central Daylight Time</EndDateTime>
-		<EndTestTime>1747324373</EndTestTime>
+		<EndDateTime>May 15 17:23 Central Daylight Time</EndDateTime>
+		<EndTestTime>1747347799</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>
