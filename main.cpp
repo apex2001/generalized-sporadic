@@ -6,6 +6,7 @@
 #include "./src/search_algorithm.h"
 #include "./src/amc.h"
 #include "./src/ecdf.h"
+#include "./src/ecdf.h"
 
 void create_csv_file(string filename) {
   ifstream file_check(filename);
@@ -140,4 +141,6 @@ int main(int argc, char* argv[]) {
 
   create_csv_file(filename);
   write_result_to_csv(filename, result);
+
+  return 0;
 }

@@ -148,7 +148,7 @@ TEST(dbfL1_l7Test, SingleLOTask) {
 
     TaskSet ts2;
     // cout << dbfLi(0, 10, 8, 2) + dbfLi(0, 15, 9, 3) + std::min(9.0, dbfUNi_l2(0, 10, 2, 8, 10) + dbfUNi_l2(0, 10, 3, 9, 15)) << endl;
-    ASSERT_EQ(dbfL1_l7(0, 10, ts2), 0.0); // dbfUN_l6 returns -1 for empty set
+    ASSERT_EQ(dbfL1_l7(0, 10, ts2), 0.0); 
 
     TaskSet ts3;
     Task task5(0, 10, 2, 4, 10, 8, Level::LO);
