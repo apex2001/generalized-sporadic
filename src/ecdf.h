@@ -27,14 +27,14 @@ double dbfLi(int time, int Ti, double DiL, double CiL) { //Equation (1)
     return res;
 }
 
-bool Proposition1(int t, TaskSet taskSet) {
+bool Proposition1(int t, TaskSet& taskSet) {
     double sum = 0;
 
     // for (int i = 0; i < candidates.size(); i++) {
     //     Task task = candidates[i];
     //     sum += dbfLi(t, task.T, task.tight_D, task.C_LO);
     // }
-    for (const auto& pair : taskSet.get_task_set()) {
+    for (const auto& pair : taskSet.get_task_set_ref()) {
         const Task& task = pair.second;
         sum += dbfLi(t, task.T, task.tight_D, task.C_LO);
     }
@@ -90,7 +90,7 @@ double dbfUN_l6(int t1, int t2, TaskSet& taskSet) {
     double res = 0;
     double dbfUNi_Sum = 0;
     double max_DiL = 0;
-    map<int, Task> taskSetMap = taskSet.get_task_set();
+    auto& taskSetMap = taskSet.get_task_set_ref();
 
     for (const auto& pair : taskSetMap) {
         const Task& task = pair.second;
@@ -114,7 +114,7 @@ double dbfL1_l7(int t1, int t2, TaskSet& taskSet) {
     double dbfLi_Sum = 0;
     double dbfUN_Res = dbfUN_l6(t1, t2, taskSet);
 
-    map<int, Task> taskSetMap = taskSet.get_task_set();
+    auto& taskSetMap = taskSet.get_task_set_ref();
     
     for (const auto& pair : taskSetMap) {
         const Task& task = pair.second;
@@ -141,7 +141,7 @@ double CO_prop2(int time, double CiL, double Di, double DiL, int Ti) {
 
 double dbfL2_l8(int t1, int t2, TaskSet& taskSet) {
     double res = 0;
-    map<int, Task> taskSetMap = taskSet.get_task_set();
+    auto& taskSetMap = taskSet.get_task_set_ref();
     
     for (const auto& pair : taskSetMap) {
         const Task& task = pair.second;
@@ -159,7 +159,7 @@ double dbfL2_l8(int t1, int t2, TaskSet& taskSet) {
 
 double dbfL3_l9(int t1, int t2, TaskSet& taskSet) {
     double res = 0;
-    map<int, Task> taskSetMap = taskSet.get_task_set();
+    auto& taskSetMap = taskSet.get_task_set_ref();
     
     for (const auto& pair : taskSetMap) {
         const Task& task = pair.second;
@@ -182,7 +182,7 @@ double Theorem2_LHS(int t1, int t2, TaskSet& taskSet) {
     double dbfHi_Res = 0; //dbfHi_l4(t1, t2, CiH[0], Di[0], Ti[0]);
     double CO_Res = 0; //CO(t2 - t1, CiL[0], Di[0], DiL[0], Ti[0]);
 
-    map<int, Task> taskSetMap = taskSet.get_task_set();
+    auto& taskSetMap = taskSet.get_task_set_ref();
     
     for (const auto& pair : taskSetMap) {
         const Task& task = pair.second;
@@ -217,10 +217,10 @@ bool Theorem2(int t1, int t2, TaskSet& taskSet) {
     return res <= t2;
 } 
 
-int findCandiate(vector<Task> candidates, int t1, int t2, TaskSet& taskSet) {
+pair<int, int> findCandidate(vector<Task> candidates, int t1, int t2, TaskSet& taskSet) {
     double Theorem2_LHS_Res = Theorem2_LHS(t1, t2, taskSet);
     double DEM = Theorem2_LHS_Res - t2;
-    int res = -1;
+    int pos_in_candidates = -1, ID = -1;
     double DIFF = 0, DEC = INFINITY;
 
     for (int i = 0; i < candidates.size(); i++) {
@@ -230,20 +230,22 @@ int findCandiate(vector<Task> candidates, int t1, int t2, TaskSet& taskSet) {
         
             if ((MOD(t2 - t1, candidates[i].T) - (candidates[i].D - candidates[i].tight_D)) < DEC) {
                 DEC = MOD(t2 - t1, candidates[i].T) - (candidates[i].D - candidates[i].tight_D);
-                res = i;
+                pos_in_candidates = i;
+                ID = candidates[i].ID;
                 DIFF = candidates[i].C_HI - candidates[i].C_LO;
             }
             else if ((MOD(t2 - t1, candidates[i].T) - (candidates[i].D - candidates[i].tight_D)) == DEC) {
                 if (candidates[i].C_HI - candidates[i].C_LO > DIFF) {
-                    res = i;
+                    pos_in_candidates = i;
+                    ID = candidates[i].ID;
                     DIFF = candidates[i].C_HI - candidates[i].C_LO;
                 }
             }
         }    
     }
 
-    return res;
-}
+    return {pos_in_candidates, ID};
+} 
 
 void removeCandidateByIndex(std::vector<Task>& candidates, int index) {
     if (index >= 0 && index < candidates.size()) {
@@ -251,11 +253,26 @@ void removeCandidateByIndex(std::vector<Task>& candidates, int index) {
     }
 }
 
-string ECDF(TaskSet& taskSet) {
-    int i = -1, tMax = taskSet.get_t_max(), min_diff = INT_MAX;
-    vector<Task> candidates;
-    map<int, Task> taskSetMap = taskSet.get_task_set();
+void modifyTaskByID(TaskSet& taskSet, int taskId, double newTightD) { 
+    std::map<int, Task>& tasksMap = taskSet.get_task_set_ref(); 
     
+    auto it = tasksMap.find(taskId);
+    if (it != tasksMap.end()) {
+        it->second.tight_D = newTightD; // Modify the actual task in taskSet
+    } else {
+        // Optional: Add error handling if a task ID is expected to always be found
+        std::cerr << "Warning: Task with ID " << taskId << " not found in modifyTaskByID." << std::endl;
+    }
+}
+
+
+string ECDF(TaskSet& taskSet) {
+    int tMax = taskSet.get_t_max(), min_diff = INT_MAX;
+    vector<Task> candidates;
+    const auto& taskSetMap = taskSet.get_task_set_ref();
+
+    pair<int, int> i_test = {-1, -1};
+
     for (const auto& pair : taskSetMap) {
         const Task& task = pair.second;
         
@@ -264,20 +281,27 @@ string ECDF(TaskSet& taskSet) {
             min_diff = min(min_diff, (task.D - task.tight_D));
         }
     }
-    
+
     while (true) {
         bool feasible = true;
 
         for (int t = 0; t <= tMax; t++) {
             if (!Proposition1(t, taskSet)) {
-                if (i == -1) {
-                    return "Failure";
+                if (i_test.first == -1 && i_test.second == -1) { return "Failure"; }
+                else { 
+                    if (i_test.first < 0 || i_test.first >= candidates.size()) {
+                        std::cerr << "Error: i_test.first=" << i_test.first 
+                                << " is out of bounds for candidates (size " << candidates.size() 
+                                << ") in P1 failure block." << std::endl;
+                        return "Error"; 
+                    }
                 }
+            
+                candidates[i_test.first].tight_D += 1;
+                modifyTaskByID(taskSet, i_test.second, candidates[i_test.first].tight_D);
+                removeCandidateByIndex(candidates, i_test.first);
                 
-                candidates[i].tight_D += 1;
-                removeCandidateByIndex(candidates, i);
-                
-                i = -1;
+                i_test = {-1, -1};
                 break;
             }
         }
@@ -289,12 +313,18 @@ string ECDF(TaskSet& taskSet) {
                         return "Failure";
                     }
 
-                    i = findCandiate(candidates, t1, t2, taskSet);
-                    candidates[i].tight_D -= 1;
+                    i_test = findCandidate(candidates, t1, t2, taskSet);
 
-                    if (candidates[i].tight_D - 1 < candidates[i].C_LO) {
-                        removeCandidateByIndex(candidates, i);
+                    if (i_test.first != -1 && i_test.second != -1) {
+                        candidates[i_test.first].tight_D -= 1;
+                        modifyTaskByID(taskSet, i_test.second, candidates[i_test.first].tight_D);
+                        
+                        if (candidates[i_test.first].tight_D < candidates[i_test.first].C_LO) { 
+                            removeCandidateByIndex(candidates, i_test.first);
+                            i_test = {-1, -1};
+                        }
                     }
+                    
 
                     feasible = false;
                     break;

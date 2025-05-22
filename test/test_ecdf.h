@@ -161,5 +161,31 @@ TEST(dbfL1_l7Test, SingleLOTask) {
 }
 
 
+TEST (rmCandidates, RemoveCandidateByIndex) {
+    vector<Task> candidates;
+    Task task1(0, 5, 2, 2, 3, 3);
+    Task task2(1, 6, 2, 3, 4, 4);
+    candidates.push_back(task1);
+    candidates.push_back(task2);
+
+    EXPECT_EQ(candidates.size(), 2);
+
+    removeCandidateByIndex(candidates, 0);
+
+    EXPECT_EQ(candidates.size(), 1);
+    EXPECT_EQ(candidates[0].ID, task2.ID);
+
+    vector<Task> emptyCandidates;
+    removeCandidateByIndex(emptyCandidates, 0);
+    EXPECT_EQ(emptyCandidates.size(), 0);
+    
+    candidates.push_back(task1);
+    Task task3(2, 7, 2, 2, 3, 3);
+    candidates.push_back(task3);
+
+    removeCandidateByIndex(candidates, candidates.size() - 1);
+    EXPECT_EQ(candidates.size(), 2);
+    EXPECT_EQ(candidates[1].ID, task1.ID);
+}
 
 #endif
