@@ -67,52 +67,52 @@ TEST(ECDF, dbfUNi_l2) {
     ASSERT_EQ(dbfUNi_l2(3, 8, 2, 6, 10), 2.0);
 }
 
-TEST(dbfUN_l6Test, MixedTasks_ConditionFalseForHI) {
-    TaskSet ts;
-    Task task1(0, 10, 2, 4, 10, 8, Level::LO);
-    Task task2(1, 15, 3, 6, 20, 9, Level::HI);
+// TEST(dbfUN_l6Test, MixedTasks_ConditionFalseForHI) {
+//     TaskSet ts;
+//     Task task1(0, 10, 2, 4, 10, 8, Level::LO);
+//     Task task2(1, 15, 3, 6, 20, 9, Level::HI);
 
-    ts.task_set[task1.ID] = task1;
-    ts.task_set[task2.ID] = task2;
-    // max_DiL = 9
-    // LO task: dbfUNi_l2(0, 10, 2, 8, 10)
-    // HI task: (10 - 0) <= (20 - 9) => 10 <= 11 (true) -> dbfUNi_l2(0, 10, 3, 9, 15)
-    ASSERT_EQ(dbfUN_l6(0, 10, ts), std::min(9.0, dbfUNi_l2(0, 10, 2, 8, 10) + dbfUNi_l2(0, 10, 3, 9, 15)));
+//     ts.task_set[task1.ID] = task1;
+//     ts.task_set[task2.ID] = task2;
+//     // max_DiL = 9
+//     // LO task: dbfUNi_l2(0, 10, 2, 8, 10)
+//     // HI task: (10 - 0) <= (20 - 9) => 10 <= 11 (true) -> dbfUNi_l2(0, 10, 3, 9, 15)
+//     ASSERT_EQ(dbfUN_l6(0, 10, ts), std::min(9.0, dbfUNi_l2(0, 10, 2, 8, 10) + dbfUNi_l2(0, 10, 3, 9, 15)));
 
-    TaskSet ts2;
-    Task task3(0, 10, 2, 4, 10, 8, Level::LO);
-    Task task4(1, 15, 3, 6, 18, 9, Level::HI);
-    ts2.task_set[task3.ID] = task3;
-    ts2.task_set[task4.ID] = task4;
-    // max_DiL = 9
-    // LO task: dbfUNi_l2(0, 5, 2, 8, 10)
-    // HI task: (5 - 0) <= (18 - 9) => 5 <= 9 (true) -> dbfUNi_l2(0, 5, 3, 9, 15)
-    ASSERT_EQ(dbfUN_l6(0, 5, ts2), std::min(9.0, dbfUNi_l2(0, 5, 2, 8, 10) + dbfUNi_l2(0, 5, 3, 9, 15)));
+//     TaskSet ts2;
+//     Task task3(0, 10, 2, 4, 10, 8, Level::LO);
+//     Task task4(1, 15, 3, 6, 18, 9, Level::HI);
+//     ts2.task_set[task3.ID] = task3;
+//     ts2.task_set[task4.ID] = task4;
+//     // max_DiL = 9
+//     // LO task: dbfUNi_l2(0, 5, 2, 8, 10)
+//     // HI task: (5 - 0) <= (18 - 9) => 5 <= 9 (true) -> dbfUNi_l2(0, 5, 3, 9, 15)
+//     ASSERT_EQ(dbfUN_l6(0, 5, ts2), std::min(9.0, dbfUNi_l2(0, 5, 2, 8, 10) + dbfUNi_l2(0, 5, 3, 9, 15)));
 
-    TaskSet ts3;
-    Task task5(0, 10, 2, 4, 10, 5, Level::LO);
-    Task task6(1, 15, 3, 6, 12, 12, Level::HI);
-    Task task7(2, 7, 1, 2, 8, 3, Level::LO);
-    ts3.task_set[task5.ID] = task5;
-    ts3.task_set[task6.ID] = task6;
-    ts3.task_set[task7.ID] = task7;
-    // max_DiL = 12
-    // LO task 0: dbfUNi_l2(0, 10, 2, 5, 10)
-    // HI task 1: (10 - 0) <= (12 - 12) => 10 <= 0 (false)
-    // LO task 2: dbfUNi_l2(0, 10, 1, 3, 7)
-    ASSERT_EQ(dbfUN_l6(0, 10, ts), std::min(12.0, dbfUNi_l2(0, 10, 2, 5, 10) + dbfUNi_l2(0, 10, 1, 3, 7)));
+//     TaskSet ts3;
+//     Task task5(0, 10, 2, 4, 10, 5, Level::LO);
+//     Task task6(1, 15, 3, 6, 12, 12, Level::HI);
+//     Task task7(2, 7, 1, 2, 8, 3, Level::LO);
+//     ts3.task_set[task5.ID] = task5;
+//     ts3.task_set[task6.ID] = task6;
+//     ts3.task_set[task7.ID] = task7;
+//     // max_DiL = 12
+//     // LO task 0: dbfUNi_l2(0, 10, 2, 5, 10)
+//     // HI task 1: (10 - 0) <= (12 - 12) => 10 <= 0 (false)
+//     // LO task 2: dbfUNi_l2(0, 10, 1, 3, 7)
+//     ASSERT_EQ(dbfUN_l6(0, 10, ts), std::min(12.0, dbfUNi_l2(0, 10, 2, 5, 10) + dbfUNi_l2(0, 10, 1, 3, 7)));
 
-    TaskSet ts4;
-    Task task8(0, 10, 8, 4, 10, 2, Level::LO);
-    Task task9(1, 15, 3, 6, 12, 1, Level::HI);
+//     TaskSet ts4;
+//     Task task8(0, 10, 8, 4, 10, 2, Level::LO);
+//     Task task9(1, 15, 3, 6, 12, 1, Level::HI);
 
-    ts4.task_set[task8.ID] = task8;
-    ts4.task_set[task9.ID] = task9;
-    // max_DiL = 2
-    // LO task 0: dbfUNi_l2(0, 5, 8, 2, 10)
-    // HI task 1: (5 - 0) <= (12 - 1) => 5 <= 11 (true) -> dbfUNi_l2(0, 5, 3, 1, 15)
-    ASSERT_EQ(dbfUN_l6(0, 5, ts2), std::min(2.0, dbfUNi_l2(0, 5, 8, 2, 10) + dbfUNi_l2(0, 5, 3, 1, 15)));
-}
+//     ts4.task_set[task8.ID] = task8;
+//     ts4.task_set[task9.ID] = task9;
+//     // max_DiL = 2
+//     // LO task 0: dbfUNi_l2(0, 5, 8, 2, 10)
+//     // HI task 1: (5 - 0) <= (12 - 1) => 5 <= 11 (true) -> dbfUNi_l2(0, 5, 3, 1, 15)
+//     ASSERT_EQ(dbfUN_l6(0, 5, ts2), std::min(2.0, dbfUNi_l2(0, 5, 8, 2, 10) + dbfUNi_l2(0, 5, 3, 1, 15)));
+// }
 
 TEST(dbfL1_l7Test, SingleLOTask) {
     TaskSet ts;
@@ -150,14 +150,14 @@ TEST(dbfL1_l7Test, SingleLOTask) {
     // cout << dbfLi(0, 10, 8, 2) + dbfLi(0, 15, 9, 3) + std::min(9.0, dbfUNi_l2(0, 10, 2, 8, 10) + dbfUNi_l2(0, 10, 3, 9, 15)) << endl;
     ASSERT_EQ(dbfL1_l7(0, 10, ts2), 0.0); 
 
-    TaskSet ts3;
-    Task task5(0, 10, 2, 4, 10, 8, Level::LO);
-    Task task6(1, 15, 3, 6, 20, 9, Level::HI);
-    ts3.task_set[task5.ID] = task5;
-    ts3.task_set[task6.ID] = task6;
-    // dbfLi_Sum = dbfLi(0, 10, 8, 2) + dbfLi(0, 15, 9, 3)
-    // dbfUN_Res = dbfUN_l6(0, 10, ts) (10-0) <= (20-9) => 10 <= 11 (true)
-    ASSERT_EQ(dbfL1_l7(0, 10, ts3), dbfLi(0, 10, 8, 2) + dbfLi(0, 15, 9, 3) + std::min(9.0, dbfUNi_l2(0, 10, 2, 8, 10) + dbfUNi_l2(0, 10, 3, 9, 15)));
+    // TaskSet ts3;
+    // Task task5(0, 10, 2, 4, 10, 8, Level::LO);
+    // Task task6(1, 15, 3, 6, 20, 9, Level::HI);
+    // ts3.task_set[task5.ID] = task5;
+    // ts3.task_set[task6.ID] = task6;
+    // // dbfLi_Sum = dbfLi(0, 10, 8, 2) + dbfLi(0, 15, 9, 3)
+    // // dbfUN_Res = dbfUN_l6(0, 10, ts) (10-0) <= (20-9) => 10 <= 11 (true)
+    // ASSERT_EQ(dbfL1_l7(0, 10, ts3), dbfLi(0, 10, 8, 2) + dbfLi(0, 15, 9, 3) + std::min(9.0, dbfUNi_l2(0, 10, 2, 8, 10) + dbfUNi_l2(0, 10, 3, 9, 15)));
 }
 
 

@@ -1,0 +1,111 @@
+Start testing: May 22 22:54 Central Daylight Time
+----------------------------------------------------------
+1/1 Testing: CMakeTest
+1/1 Test: CMakeTest
+Command: "C:/Users/nguye/Documents/GitHub/generalized-sporadic/build/test/CMakeTest.exe"
+Directory: C:/Users/nguye/Documents/GitHub/generalized-sporadic/build/test
+"CMakeTest" start time: May 22 22:54 Central Daylight Time
+Output:
+----------------------------------------------------------
+[==========] Running 8 tests from 3 test suites.
+[----------] Global test environment set-up.
+[----------] 6 tests from ECDF
+[ RUN      ] ECDF.MOD
+[       OK ] ECDF.MOD (0 ms)
+[ RUN      ] ECDF.dbfLi
+difference: 8
+divRes: 1.6
+6
+difference: 11
+divRes: 1.57143
+4
+difference: 15
+divRes: 1.5
+2
+difference: 19
+divRes: 1.58333
+8
+difference: 22
+divRes: 1.46667
+6
+difference: -5
+divRes: -0.25
+0
+difference: -30
+divRes: -2
+-2
+[       OK ] ECDF.dbfLi (0 ms)
+[ RUN      ] ECDF.Proposition1
+difference: -317
+divRes: -3.77381
+-27
+difference: -434
+divRes: -1.71542
+-9
+difference: -25
+divRes: -0.294118
+0
+difference: -91
+divRes: -0.266862
+0
+difference: -416
+divRes: -1.05852
+-9
+difference: -221
+divRes: -0.686335
+0
+[       OK ] ECDF.Proposition1 (0 ms)
+[ RUN      ] ECDF.Proposition1_Fail_ManyTasks_HighCombinedUtilization
+num_tasks: 4
+utilization: 0.842857
+t_max: 0
+difference: 10
+divRes: 2
+9
+difference: 5
+divRes: 0.5
+4
+difference: 8
+divRes: 1.14286
+4
+difference: 0
+divRes: 0
+6
+[       OK ] ECDF.Proposition1_Fail_ManyTasks_HighCombinedUtilization (0 ms)
+[ RUN      ] ECDF.dbfHi_l4
+[       OK ] ECDF.dbfHi_l4 (0 ms)
+[ RUN      ] ECDF.dbfUNi_l2
+[       OK ] ECDF.dbfUNi_l2 (0 ms)
+[----------] 6 tests from ECDF (0 ms total)
+
+[----------] 1 test from dbfL1_l7Test
+[ RUN      ] dbfL1_l7Test.SingleLOTask
+task2: 0
+task3: 1
+task4: 0
+difference: -5
+divRes: -0.5
+0
+difference: -3
+divRes: -0.428571
+0
+[       OK ] dbfL1_l7Test.SingleLOTask (0 ms)
+[----------] 1 test from dbfL1_l7Test (0 ms total)
+
+[----------] 1 test from rmCandidates
+[ RUN      ] rmCandidates.RemoveCandidateByIndex
+[       OK ] rmCandidates.RemoveCandidateByIndex (0 ms)
+[----------] 1 test from rmCandidates (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 8 tests from 3 test suites ran. (1 ms total)
+[  PASSED  ] 8 tests.
+<end of output>
+Test time =   0.61 sec
+----------------------------------------------------------
+Test Passed.
+"CMakeTest" end time: May 22 22:54 Central Daylight Time
+"CMakeTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: May 22 22:54 Central Daylight Time

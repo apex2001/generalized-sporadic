@@ -11,24 +11,25 @@
 //------------ MOD FUNCTION ------------------
 
 int MOD(int t, int Ti) {
-    int res = t - floor(t / Ti) * Ti;
+    double divRes = double(t) / double(Ti);
+    int res = t - floor(divRes) * Ti;
     
     return res;
 }
 
 //---------- PROPOSITION 1 FUNCTIONS - EDF schedulability in LC-------------
 
-double dbfLi(int time, int Ti, double DiL, double CiL) { //Equation (1)
-    double difference = double(time) - double(DiL);
-    double divRes = difference / Ti;
-    double RHS = (floor(divRes) +  1) * CiL;
-    double res = max(0.0, RHS);
+int dbfLi(int time, int Ti, int DiL, int CiL) { //Equation (1)
+    int difference = time - DiL;
+    double divRes = double(difference) / double(Ti);
+    int RHS = (floor(divRes) +  1) * CiL;
+    int res = max(0, RHS);
 
     return res;
 }
 
 bool Proposition1(int t, TaskSet& taskSet) {
-    double sum = 0;
+    int sum = 0;
 
     // for (int i = 0; i < candidates.size(); i++) {
     //     Task task = candidates[i];
@@ -48,7 +49,10 @@ bool Proposition1(int t, TaskSet& taskSet) {
 }
 
 int dbfHi_l4(int t1, int t2, int CiH, int Di, int Ti) {
-    int RHS = (floor((t2 - t1 - Di) / Ti) + 1) * CiH;
+    int interval = t2 - t1;
+    int difference = interval - Di;
+    double divRes = double(difference) / double(Ti);
+    int RHS = (floor(divRes) + 1) * CiH;
 
     return max(0, RHS);
 }
@@ -56,7 +60,7 @@ int dbfHi_l4(int t1, int t2, int CiH, int Di, int Ti) {
 int dbfUNi_l2(int t1, int t2, int CiL, int DiL, int Ti) {
     int res = 0;
     int modRes = MOD(t1, Ti);
-    double divRes = t1 / Ti;
+    double divRes = double(t1) / double(Ti);
     int clause2LHS = (floor(divRes)) * Ti + DiL;
 
     if (DiL > modRes && clause2LHS <= t2)
@@ -79,9 +83,7 @@ bool isCase2(int t1, int t2, Task task) {
 //TODO: check if gemini version vs this version is correct
 bool isCase3(int t1, int t2, Task task) {
     return (task.L == Level::HI && ((t2 - t1) > (task.D - task.tight_D)) &&
-            !((task.D - task.tight_D) < MOD(t2 - t1, task.T) && // case 3 lemma 4 fail
-                (MOD(t2 - t1, task.T) < task.D) &&      
-                ((floor((t2 - t1) / task.T) * task.T + task.D) <= t2))  &&
+            !isCase2(t1, t2, task)  &&
             
                 !((task.tight_D > MOD(t1, task.T)) && // case 3 lemma 2 fail
                 ((floor(t1 / task.T) / task.T + task.tight_D) <= t2)));
@@ -294,20 +296,14 @@ string ECDF(TaskSet& taskSet) {
         whileCount++;
 
         for (int t = 0; t <= tMax; t++) {
-            if (!Proposition1(t, taskSet)) {
-                // cout << "Start going into P1: " << whileCount << "\n";
-                // cout << "i_test: " << i_test.first << ", " << i_test.second << "\n";
-                        // cout << "whileCount in Prop1 failure: " << whileCount;
+            if (!Proposition1(t, taskSet)) {              
                 if (i_test.second == -1) { return "Failure"; }
                 
                 std::map<int, Task>& tasksMap = taskSet.get_task_set_ref();
                 auto it_task_in_set = tasksMap.find(i_test.second);
-                
-                // cout << "In P1, before: Task ID: " << i_test.second << " tight_D: " << tasksMap[i_test.second].tight_D << "\n";
 
                 if (it_task_in_set != tasksMap.end()) {
                     it_task_in_set->second.tight_D += 1;
-                    // cout << "In P1, after: Task ID: " << i_test.second << " tight_D: " << tasksMap[i_test.second].tight_D << "\n";
                 } else {
                     std::cerr << "Critical Error: P1 trying to modify non-existent task ID: " << i_test.second << std::endl;
                     return "Error";
@@ -316,57 +312,46 @@ string ECDF(TaskSet& taskSet) {
                 
                 for (size_t k = 0; k < candidates.size(); ++k) {
                     if (candidates[k].ID == i_test.second) {
-                        // cout << "In P1, before removal from cand. list\n";
                         removeCandidateByIndex(candidates, k);
-                        // cout << "In P1, after removal from cand. list\n";
                         break; 
                     }
                 }
                 
-                // cout << "Exiting P1 loop\n";
                 i_test = {-1, -1};
                 break;
             }
-            // cout << "P1 passed!\n"; 
         }
-
-        // cout << "exited P1 loop\n";
 
         bool hc_check_failed_this_iteration = false;
         for (int t2 = 0; t2 <= tMax; t2++) {
             for (int t1 = 0; t1 < t2 - min_diff; t1++) {
                 if (!Theorem2(t1, t2, taskSet)) {
-
-                    // cout << "Start going into T2: " << whileCount << "\n";
-
                     if (t1 == 0 || candidates.empty()) {
-                        // cout << "whileCount in T2 failure: " << whileCount;
                         return "Failure";
                     }
-
 
                     i_test = findCandidate(candidates, t1, t2, taskSet);
 
                     if (i_test.first >= 0 && i_test.second >= 0) {
-
-                        // cout << "In T2, before: Task ID: " << i_test.second << " tight_D: " << candidates[i_test.first].tight_D << "\n";
                         candidates[i_test.first].tight_D -= 1;
                         modifyTaskByID(taskSet, i_test.second, candidates[i_test.first].tight_D);
-                        // cout << "In T2, after: Task ID: " << i_test.second << " tight_D: " << candidates[i_test.first].tight_D << "\n";
 
                         if (candidates[i_test.first].tight_D < candidates[i_test.first].C_LO) { 
-                            // cout << "In T2, before removal from cand. list: Task ID: " << i_test.second << " tight_D: " << candidates[i_test.first].tight_D << "\n";
                             removeCandidateByIndex(candidates, i_test.first);
-                            // cout << "In T2, after removal from cand. list\n";
                         }
                     }
+
+                    // candidates[i_test.first].tight_D -= 1;
+                    // modifyTaskByID(taskSet, i_test.second, candidates[i_test.first].tight_D);
+
+                    // if (candidates[i_test.first].tight_D < candidates[i_test.first].C_LO) { 
+                    //     removeCandidateByIndex(candidates, i_test.first);
+                    // }
                     
-                    hc_check_failed_this_iteration = true;
-                    feasible = false;
-                    // cout << "feasible modified to false\n";
-                    break;
+                    // hc_check_failed_this_iteration = true;
+                    // feasible = false;
+                    // break;
                 }
-                // cout << "T2 passed!\n";
             }
 
             if (hc_check_failed_this_iteration) {
@@ -374,13 +359,9 @@ string ECDF(TaskSet& taskSet) {
             }
         }
 
-        // cout << "exited T2 loop\n";
-
         if (feasible == true) {
-            // cout << "whileCount in feasible success: " << whileCount;
             return "Success";
         }
-        
     }
 
     return "Unknown"; // This line should never be reached

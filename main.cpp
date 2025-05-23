@@ -15,7 +15,7 @@ void create_csv_file(string filename) {
     std::ofstream file_create(filename);
         
     if (file_create.is_open()) {
-      file_create << "utilization,num_tasks,before_success_count,eds_success_count,eds_cum_duration,edf_vd_success_count,edf_vd_cum_duration,amc_success_count,amc_cum_duration,set_size,highest_size" << endl;
+      file_create << "utilization,num_tasks,before_success_count,eds_success_count,eds_cum_duration,edf_vd_success_count,edf_vd_cum_duration,amc_success_count,amc_cum_duration,ecdf_success_count,ecdf_cum_duration,set_size,highest_size" << endl;
       file_create.close();
     } else return;
   } else {
