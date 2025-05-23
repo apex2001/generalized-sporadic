@@ -10,8 +10,8 @@
 
 //------------ MOD FUNCTION ------------------
 
-double MOD(double t, double Ti) {
-    double res = t - floor(t / Ti) * Ti;
+int MOD(int t, int Ti) {
+    int res = t - floor(t / Ti) * Ti;
     
     return res;
 }
@@ -47,20 +47,20 @@ bool Proposition1(int t, TaskSet& taskSet) {
     return true;
 }
 
-double dbfHi_l4(int t1, int t2, double CiH, double Di, int Ti) {
-    double RHS = (floor((t2 - t1 - Di) / Ti) + 1) * CiH;
+int dbfHi_l4(int t1, int t2, int CiH, int Di, int Ti) {
+    int RHS = (floor((t2 - t1 - Di) / Ti) + 1) * CiH;
 
-    return max(double(0), RHS);
+    return max(0, RHS);
 }
 
-double dbfUNi_l2(int t1, int t2, double CiL, double DiL, double Ti) {
-    double res = 0;
-    double modRes = MOD(t1, Ti);
+int dbfUNi_l2(int t1, int t2, int CiL, int DiL, int Ti) {
+    int res = 0;
+    int modRes = MOD(t1, Ti);
     double divRes = t1 / Ti;
-    double clause2LHS = (floor(divRes)) * Ti + DiL;
+    int clause2LHS = (floor(divRes)) * Ti + DiL;
 
     if (DiL > modRes && clause2LHS <= t2)
-        res = min(double(CiL), modRes);
+        res = min(CiL, modRes);
 
     return res;
 }
@@ -76,6 +76,7 @@ bool isCase2(int t1, int t2, Task task) {
             ((floor((t2 - t1) / task.T) * task.T + task.D) <= t2));
 }
 
+//TODO: check if gemini version vs this version is correct
 bool isCase3(int t1, int t2, Task task) {
     return (task.L == Level::HI && ((t2 - t1) > (task.D - task.tight_D)) &&
             !((task.D - task.tight_D) < MOD(t2 - t1, task.T) && // case 3 lemma 4 fail
@@ -86,10 +87,11 @@ bool isCase3(int t1, int t2, Task task) {
                 ((floor(t1 / task.T) / task.T + task.tight_D) <= t2)));
 }
 
-double dbfUN_l6(int t1, int t2, TaskSet& taskSet) {
-    double res = 0;
-    double dbfUNi_Sum = 0;
-    double max_DiL = 0;
+
+int dbfUN_l6(int t1, int t2, TaskSet& taskSet) {
+    int res = 0;
+    int dbfUNi_Sum = 0;
+    int max_DiL = 0;
     auto& taskSetMap = taskSet.get_task_set_ref();
 
     for (const auto& pair : taskSetMap) {
@@ -109,10 +111,10 @@ double dbfUN_l6(int t1, int t2, TaskSet& taskSet) {
     return res;
 }
 
-double dbfL1_l7(int t1, int t2, TaskSet& taskSet) {
-    double res = 0;
-    double dbfLi_Sum = 0;
-    double dbfUN_Res = dbfUN_l6(t1, t2, taskSet);
+int dbfL1_l7(int t1, int t2, TaskSet& taskSet) {
+    int res = 0;
+    int dbfLi_Sum = 0;
+    int dbfUN_Res = dbfUN_l6(t1, t2, taskSet);
 
     auto& taskSetMap = taskSet.get_task_set_ref();
     
@@ -124,30 +126,32 @@ double dbfL1_l7(int t1, int t2, TaskSet& taskSet) {
         }
     }
 
-    return dbfLi_Sum + dbfUN_Res;
+    res = dbfLi_Sum + dbfUN_Res;
+
+    return res;
 }
 
-double dbfLi_l4(int t1, int t2, double CiL, double Di, int Ti) {
-    double RHS = (floor((t2 - Di) / Ti) - floor ((t2 - t1 - Di) / Ti) - 1);
+int dbfLi_l4(int t1, int t2, int CiL, int Di, int Ti) {
+    int RHS = (floor((t2 - Di) / Ti) - floor ((t2 - t1 - Di) / Ti) - 1);
 
-    return max(double(0), RHS) * CiL;
+    return max(0, RHS) * CiL;
 }
 
-double CO_prop2(int time, double CiL, double Di, double DiL, int Ti) {
-    double RHS = MOD(time, Ti) - (Di - DiL);
+int CO_prop2(int time, int CiL, int Di, int DiL, int Ti) {
+    int RHS = MOD(time, Ti) - (Di - DiL);
 
-    return min(double(CiL), RHS);
+    return min(CiL, RHS);
 }
 
-double dbfL2_l8(int t1, int t2, TaskSet& taskSet) {
-    double res = 0;
+int dbfL2_l8(int t1, int t2, TaskSet& taskSet) {
+    int res = 0;
     auto& taskSetMap = taskSet.get_task_set_ref();
     
     for (const auto& pair : taskSetMap) {
         const Task& task = pair.second;
         
         if (isCase2(t1, t2, task)) {
-            double cal = dbfLi_l4(t1, t2, task.C_LO, task.D, task.T)\
+            int cal = dbfLi_l4(t1, t2, task.C_LO, task.D, task.T)\
                         + task.C_LO\
                         + CO_prop2(t2 - t1, task.C_LO, task.D, task.tight_D, task.T);
             res += cal;
@@ -157,15 +161,15 @@ double dbfL2_l8(int t1, int t2, TaskSet& taskSet) {
     return res;
 }
 
-double dbfL3_l9(int t1, int t2, TaskSet& taskSet) {
-    double res = 0;
+int dbfL3_l9(int t1, int t2, TaskSet& taskSet) {
+    int res = 0;
     auto& taskSetMap = taskSet.get_task_set_ref();
     
     for (const auto& pair : taskSetMap) {
         const Task& task = pair.second;
         
         if (isCase3(t1, t2, task)) {
-            double cal = dbfLi_l4(t1, t2, task.C_LO, task.D, task.T)
+            int cal = dbfLi_l4(t1, t2, task.C_LO, task.D, task.T)
                         + task.C_LO;
             res += cal;
         }
@@ -174,13 +178,13 @@ double dbfL3_l9(int t1, int t2, TaskSet& taskSet) {
     return res;
 }
 
-double Theorem2_LHS(int t1, int t2, TaskSet& taskSet) {
-    double dbfL1_Res = dbfL1_l7(t1, t2, taskSet);
-    double dbfL2_Res = dbfL2_l8(t1, t2, taskSet);
-    double dbfL3_Res = dbfL3_l9(t1, t2, taskSet);
+int Theorem2_LHS(int t1, int t2, TaskSet& taskSet) {
+    int dbfL1_Res = dbfL1_l7(t1, t2, taskSet);
+    int dbfL2_Res = dbfL2_l8(t1, t2, taskSet);
+    int dbfL3_Res = dbfL3_l9(t1, t2, taskSet);
 
-    double dbfHi_Res = 0; //dbfHi_l4(t1, t2, CiH[0], Di[0], Ti[0]);
-    double CO_Res = 0; //CO(t2 - t1, CiL[0], Di[0], DiL[0], Ti[0]);
+    int dbfHi_Res = 0; //dbfHi_l4(t1, t2, CiH[0], Di[0], Ti[0]);
+    int CO_Res = 0; //CO(t2 - t1, CiL[0], Di[0], DiL[0], Ti[0]);
 
     auto& taskSetMap = taskSet.get_task_set_ref();
     
@@ -191,7 +195,7 @@ double Theorem2_LHS(int t1, int t2, TaskSet& taskSet) {
             if ((t2 - t1) > (task.D - task.tight_D)) {
                 if  (isCase2(t1, t2, task)) { // case 2 lemma 4
 
-                    double CO_Cal = CO_prop2(t2 - t1, task.C_LO, task.D, task.tight_D, task.T)
+                    int CO_Cal = CO_prop2(t2 - t1, task.C_LO, task.D, task.tight_D, task.T)
                                 + (task.C_HI - task.C_LO); 
                     CO_Res += CO_Cal;
                     dbfHi_Res += dbfHi_l4(t1, t2, task.C_HI, task.D, task.T);
@@ -204,15 +208,15 @@ double Theorem2_LHS(int t1, int t2, TaskSet& taskSet) {
         }
     }
 
-    double sumDBFs = dbfL1_Res + dbfL2_Res + dbfL3_Res;
-    double min_t1 = min(double(t1), sumDBFs);
-    double res = min_t1 + dbfHi_Res + CO_Res;
+    int sumDBFs = dbfL1_Res + dbfL2_Res + dbfL3_Res;
+    int min_t1 = min(t1, sumDBFs);
+    int res = min_t1 + dbfHi_Res + CO_Res;
 
     return res;
 }
 
 bool Theorem2(int t1, int t2, TaskSet& taskSet) {
-    double res = Theorem2_LHS(t1, t2, taskSet);
+    int res = Theorem2_LHS(t1, t2, taskSet);
 
     return res <= t2;
 } 
@@ -253,14 +257,13 @@ void removeCandidateByIndex(std::vector<Task>& candidates, int index) {
     }
 }
 
-void modifyTaskByID(TaskSet& taskSet, int taskId, double newTightD) { 
+void modifyTaskByID(TaskSet& taskSet, int taskId, int newTightD) { 
     std::map<int, Task>& tasksMap = taskSet.get_task_set_ref(); 
     
     auto it = tasksMap.find(taskId);
     if (it != tasksMap.end()) {
-        it->second.tight_D = newTightD; // Modify the actual task in taskSet
+        it->second.tight_D = newTightD; 
     } else {
-        // Optional: Add error handling if a task ID is expected to always be found
         std::cerr << "Warning: Task with ID " << taskId << " not found in modifyTaskByID." << std::endl;
     }
 }
@@ -282,58 +285,102 @@ string ECDF(TaskSet& taskSet) {
         }
     }
 
+    // for debugging purposes
+    int whileCount = 0;
+    // cout << "tMax: " << tMax << "\n";
+
     while (true) {
         bool feasible = true;
+        whileCount++;
 
         for (int t = 0; t <= tMax; t++) {
             if (!Proposition1(t, taskSet)) {
-                if (i_test.first == -1 && i_test.second == -1) { return "Failure"; }
-                else { 
-                    if (i_test.first < 0 || i_test.first >= candidates.size()) {
-                        std::cerr << "Error: i_test.first=" << i_test.first 
-                                << " is out of bounds for candidates (size " << candidates.size() 
-                                << ") in P1 failure block." << std::endl;
-                        return "Error"; 
+                // cout << "Start going into P1: " << whileCount << "\n";
+                // cout << "i_test: " << i_test.first << ", " << i_test.second << "\n";
+                        // cout << "whileCount in Prop1 failure: " << whileCount;
+                if (i_test.second == -1) { return "Failure"; }
+                
+                std::map<int, Task>& tasksMap = taskSet.get_task_set_ref();
+                auto it_task_in_set = tasksMap.find(i_test.second);
+                
+                // cout << "In P1, before: Task ID: " << i_test.second << " tight_D: " << tasksMap[i_test.second].tight_D << "\n";
+
+                if (it_task_in_set != tasksMap.end()) {
+                    it_task_in_set->second.tight_D += 1;
+                    // cout << "In P1, after: Task ID: " << i_test.second << " tight_D: " << tasksMap[i_test.second].tight_D << "\n";
+                } else {
+                    std::cerr << "Critical Error: P1 trying to modify non-existent task ID: " << i_test.second << std::endl;
+                    return "Error";
+                }
+
+                
+                for (size_t k = 0; k < candidates.size(); ++k) {
+                    if (candidates[k].ID == i_test.second) {
+                        // cout << "In P1, before removal from cand. list\n";
+                        removeCandidateByIndex(candidates, k);
+                        // cout << "In P1, after removal from cand. list\n";
+                        break; 
                     }
                 }
-            
-                candidates[i_test.first].tight_D += 1;
-                modifyTaskByID(taskSet, i_test.second, candidates[i_test.first].tight_D);
-                removeCandidateByIndex(candidates, i_test.first);
                 
+                // cout << "Exiting P1 loop\n";
                 i_test = {-1, -1};
                 break;
             }
+            // cout << "P1 passed!\n"; 
         }
 
+        // cout << "exited P1 loop\n";
+
+        bool hc_check_failed_this_iteration = false;
         for (int t2 = 0; t2 <= tMax; t2++) {
             for (int t1 = 0; t1 < t2 - min_diff; t1++) {
                 if (!Theorem2(t1, t2, taskSet)) {
+
+                    // cout << "Start going into T2: " << whileCount << "\n";
+
                     if (t1 == 0 || candidates.empty()) {
+                        // cout << "whileCount in T2 failure: " << whileCount;
                         return "Failure";
                     }
 
+
                     i_test = findCandidate(candidates, t1, t2, taskSet);
 
-                    if (i_test.first != -1 && i_test.second != -1) {
+                    if (i_test.first >= 0 && i_test.second >= 0) {
+
+                        // cout << "In T2, before: Task ID: " << i_test.second << " tight_D: " << candidates[i_test.first].tight_D << "\n";
                         candidates[i_test.first].tight_D -= 1;
                         modifyTaskByID(taskSet, i_test.second, candidates[i_test.first].tight_D);
-                        
+                        // cout << "In T2, after: Task ID: " << i_test.second << " tight_D: " << candidates[i_test.first].tight_D << "\n";
+
                         if (candidates[i_test.first].tight_D < candidates[i_test.first].C_LO) { 
+                            // cout << "In T2, before removal from cand. list: Task ID: " << i_test.second << " tight_D: " << candidates[i_test.first].tight_D << "\n";
                             removeCandidateByIndex(candidates, i_test.first);
-                            i_test = {-1, -1};
+                            // cout << "In T2, after removal from cand. list\n";
                         }
                     }
                     
-
+                    hc_check_failed_this_iteration = true;
                     feasible = false;
+                    // cout << "feasible modified to false\n";
                     break;
                 }
+                // cout << "T2 passed!\n";
+            }
+
+            if (hc_check_failed_this_iteration) {
+                break; 
             }
         }
-        if (feasible) {
+
+        // cout << "exited T2 loop\n";
+
+        if (feasible == true) {
+            // cout << "whileCount in feasible success: " << whileCount;
             return "Success";
         }
+        
     }
 
     return "Unknown"; // This line should never be reached
